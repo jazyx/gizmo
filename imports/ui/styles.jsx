@@ -1,11 +1,15 @@
 import styled, { css } from 'styled-components'
+import { Session } from 'meteor/session'
+
+const Jazyx = Session.get("Jazyx")
 
 
 export const StyledApp = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around
+  justify-content: space-around;
+  background-color: ${Jazyx.background};
 `
 
 export const StyledPage = styled.div`

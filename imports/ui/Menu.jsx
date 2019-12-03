@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components'
-import { menuContents, menuConstants } from './MenuItems'
+import { menuItems } from './MenuItems'
 import { buttonColors
        , translucify
        } from '../utilities/utilities'
+import { Session } from 'meteor/session'
 
 
 
+const menuConstants = Session.get("Jazyx").menu
 const colors = buttonColors(menuConstants.background)
 colors.background = translucify( menuConstants.background
                                , menuConstants.bgOpacity
@@ -209,7 +211,7 @@ export default class Menu extends Component {
         >
         {menuSVG}
         <StyledList>
-          {menuContents}
+          {menuItems}
         </StyledList>
       </StyledMenu>
     );
