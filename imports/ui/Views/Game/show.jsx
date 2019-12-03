@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import Phrases from '../api/phrases';
+import Phrases from '../../../api/phrases';
 import { StyledPage
        , StyledFrame
        , StyledPhrase
        , StyledMeaning
        , StyledButtonSet
        , StyledButton
-       } from './styles'
+       } from '../../styles'
+
+
+/// <<< HARD-CODED
+const index = 1
+/// HARD-CODED >>>
 
 
 class Phrase extends Component {
@@ -17,6 +22,11 @@ class Phrase extends Component {
     this.state = {
       index: 0
     }
+  }
+
+
+  static getIndex() {
+    return index
   }
 
 
@@ -81,3 +91,5 @@ export default PhraseContainer = withTracker(() => {
     phrases: Phrases.find().fetch(),
   };
 })(Phrase);
+
+PhraseContainer.getIndex = () => index

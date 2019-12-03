@@ -1,11 +1,13 @@
+/**
+ * /home/blackslate/Repos/Gizmo/App/imports/ui/Menu.jsx
+ */
+
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components'
-import { menuItems } from './MenuItems'
 import { buttonColors
        , translucify
-       } from '../utilities/utilities'
+       } from '../../lib/utilities'
 import { Session } from 'meteor/session'
-
 
 
 const menuConstants = Session.get("Jazyx").menu
@@ -51,7 +53,7 @@ const StyledSVG = styled.svg`
   fill:    ${menuConstants.iconColor};
   opacity: ${props => props.open
                     ? 1
-                    : (props.over ? 0.75 : 0.25)
+                    : 0.25
             }
   transition: left .${menuConstants.iconOffset}s linear
             , opacity .${menuConstants.iconOffset}s;
@@ -60,10 +62,17 @@ const StyledSVG = styled.svg`
                              ? `.${menuConstants.iconSize}s, 0s;`
                              : `0s, .${menuConstants.iconOffset}s;`
                      }
-   ${props => props.disabled
-           ? `pointer-events: none;cursor: default;`
-           : `cursor: pointer;`
-    }
+  ${props => props.disabled
+          ? `pointer-events: none;cursor: default;`
+          : `cursor: pointer;`
+   }
+  
+  &:hover {
+    opacity: ${props => props.open
+                      ? 1
+                      : 0.75
+              };
+   }
 `
 
 const getSVG = ({ showMenu, disabled, visible }, onClick ) => {
@@ -121,6 +130,7 @@ const StyledList = styled.ul`
     border-radius: 1em;
     padding: 1em;
     margin-top: 0.5em;
+    text-align: center;
   }
 
   & li:hover {
@@ -199,8 +209,27 @@ export default class Menu extends Component {
   }
 
 
+  prepareMenuItems() {
+    console.log("MenuItems")
+    
+    const action = (event) => {
+      this.props.onClick(event.target.innerText)
+      this.toggleMenu()
+    }
+
+    return this.props.menuItems.map( itemString => (
+      <li
+        key={itemString}
+        onClick={action}
+      >
+        {itemString}
+      </li>
+    ))
+  }
+
+
   render() {
-    const content = <li>TODO: Menu items go here</li>
+    const content = this.prepareMenuItems()
 
     const menuSVG = getSVG(this.state, this.toggleMenu)
 
@@ -211,7 +240,7 @@ export default class Menu extends Component {
         >
         {menuSVG}
         <StyledList>
-          {menuItems}
+          {content}
         </StyledList>
       </StyledMenu>
     );
