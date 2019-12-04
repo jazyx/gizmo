@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import Phrases from '../../../api/phrases';
+import Phrases from '../../api/phrases';
 import { StyledPage
        , StyledFrame
        , StyledPhrase
        , StyledMeaning
        , StyledButtonSet
        , StyledButton
-       } from '../../styles'
+       } from '../styles'
 
 
 /// <<< HARD-CODED

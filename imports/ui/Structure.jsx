@@ -1,20 +1,20 @@
-
+///////////////////////////////////
 //    DO NOT MODIFY THIS FILE    //
 // IT IS GENERATED AUTOMATICALLY //
+//    BY server/structures.js    //
+///////////////////////////////////
 
 
-import About from './Views/About/about'
-import Show from './Views/Game/show'
-import Find from './Views/Search/find'
-import Search from './Views/Search/search'
+import About from './Views/About'
+import Game from './Views/Game'
+import Search from './Views/Search'
 
 
 class Structure{
   constructor() {
     this.components = {
       About
-    , Show
-    , Find
+    , Game
     , Search
     }
 

@@ -9,37 +9,34 @@ export const createStructure = () => {
   const ui = path.join(pathArray.join("/"), "imports/ui/")
   const output = path.join(ui, "Structure.jsx")
   const views = path.join(ui, "Views/")
-  const dirs = fs.readdirSync(views)
+  const files = fs.readdirSync(views)
   const tree = {}
 
   const imports = []
   const components = []
 
-  const addImport = (parent, file) => {
-    const ext = path.extname(file)
-    const name = path.basename(file, ext)
+  const addImport = (fileName) => {
+    const ext = path.extname(fileName)
+    const name = path.basename(fileName, ext)
     const item = name[0].toUpperCase() + name.substring(1)
-    const line = `import ${item} from './Views/${parent}/${name}'`
+    const line = `import ${item} from './Views/${name}'`
     imports.push (line)
     components.push(item)
   }
 
-  dirs.forEach( dirName => {
-    const parent = path.join(views, dirName)
-    if (fs.lstatSync(parent).isDirectory()) {
-      const files = fs.readdirSync(parent)
-                      .filter( file => (
-                         fs.lstatSync(path.join(parent, file)).isFile()
-                       ))
-      if (files.length) {
-        files.forEach( file => addImport(dirName, file))
-      }
+
+  files.forEach( fileName => {
+    const filePath = path.join(views, fileName)
+    if (fs.lstatSync(filePath).isFile()) {
+      addImport(fileName)
     }
   })
 
-  const script = `
+  const script = `///////////////////////////////////
 //    DO NOT MODIFY THIS FILE    //
 // IT IS GENERATED AUTOMATICALLY //
+//    BY server/structures.js    //
+///////////////////////////////////
 
 
 `

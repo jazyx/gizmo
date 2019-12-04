@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-import Phrases from '../../../api/phrases';
-import { StyledPage
-       } from '../../styles'
+import { StyledPage } from '../styles'
 
 /// <<< HARD-CODED
-const index = 1.5
+const index = 6
 /// HARD-CODED >>>
 
-class Search extends Component {
+class About extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -25,11 +22,11 @@ class Search extends Component {
   render() {
     return (
       <StyledPage>
-        FIND
+        SEARCH
       </StyledPage>
     );
   }
 }
 
 
-export default Search
+export default About

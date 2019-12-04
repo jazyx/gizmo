@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-import Phrases from '../../../api/phrases';
-import { StyledPage
-       } from '../../styles'
+import { StyledPage } from '../styles'
 
 /// <<< HARD-CODED
 const index = 2
