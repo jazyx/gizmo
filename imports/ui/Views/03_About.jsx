@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { StyledPage } from '../styles'
 
-/// <<< HARD-CODED
-const index = 2
-/// HARD-CODED >>>
 
 class About extends Component {
   constructor(props) {
@@ -11,11 +8,6 @@ class About extends Component {
     this.state = {
       index: 0
     }
-  }
-
-
-  static getIndex() {
-    return index
   }
 
 

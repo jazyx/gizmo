@@ -12,11 +12,6 @@ import { StyledPage
        } from '../styles'
 
 
-/// <<< HARD-CODED
-const index = 10
-/// HARD-CODED >>>
-
-
 class Phrase extends Component {
   constructor(props) {
     super(props) // { phrases: [ {...}, ... ] }
@@ -88,7 +83,5 @@ export default PhraseContainer = withTracker(() => {
     phrases: Phrases.find().fetch(),
   };
 })(Phrase);
-
-PhraseContainer.getIndex = () => index
 
 PhraseContainer.getDisplayName = () => "Фразеологизмы"

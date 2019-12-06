@@ -5,21 +5,22 @@
 ///////////////////////////////////
 
 
-import About from './Views/About'
-import Phrases from './Views/Phrases'
-import Search from './Views/Search'
+import Phrases from './Views/01_Phrases'
+import Search from './Views/02_Search'
+import About from './Views/03_About'
 
+const itemIndex = {"Phrases":1,"Search":2,"About":3}
 
 class Structure{
   constructor() {
     this.components = {
-      About
-    , Phrases
+      Phrases
     , Search
+    , About
     }
 
     const byIndex = (a, b) => (
-      this.components[a].getIndex() - this.components[b].getIndex()
+      itemIndex[a] - itemIndex[b]
     )
     this.pages = Object
                  .keys(this.components)

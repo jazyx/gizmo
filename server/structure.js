@@ -16,27 +16,39 @@ var path = require('path');
 
 export const createStructure = () => {
   let pathArray = path.resolve("./").split("/")
-  while (pathArray.pop() !== ".meteor") {}
+  while (pathArray.pop() !== ".meteor") {}    
   const ui = path.join(pathArray.join("/"), "imports/ui/")
+
   const output = path.join(ui, "Structure.jsx")
   const views = path.join(ui, "Views/")
   const files = fs.readdirSync(views)
-  const tree = {}
 
-  const imports = []
+  const regex = /((\d+)[_\s-]?)?([^\s]+)/
+
+  const imports    = []
   const components = []
+  const itemIndex  = {}
 
   const addImport = (fileName) => {
     const ext = path.extname(fileName)
     const name = path.basename(fileName, ext)
-    const item = name[0].toUpperCase() + name.substring(1)
+    const match = regex.exec(name)
+    if (!match) {
+      return
+    }
+
+    const index = parseInt(match[2], 10)
+    const item = match[3][0].toUpperCase() + match[3].substring(1)
+    itemIndex[item] = index
+
     const line = `import ${item} from './Views/${name}'`
     imports.push (line)
     components.push(item)
   }
 
 
-  files.forEach( fileName => {
+  files.forEach( fileName => { // XX_viewName
+
     const filePath = path.join(views, fileName)
     if (fs.lstatSync(filePath).isFile()) {
       addImport(fileName)
@@ -54,6 +66,7 @@ export const createStructure = () => {
 + imports.join("\n")
 + `
 
+const itemIndex = ${JSON.stringify(itemIndex)}
 
 class Structure{
   constructor() {
@@ -62,7 +75,7 @@ class Structure{
     }
 
     const byIndex = (a, b) => (
-      this.components[a].getIndex() - this.components[b].getIndex()
+      itemIndex[a] - itemIndex[b]
     )
     this.pages = Object
                  .keys(this.components)
