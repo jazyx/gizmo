@@ -2,23 +2,42 @@
 
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import Phrases from '../../api/phrases';
+import Phrases from '../../../api/phrases';
 import { StyledPage
        , StyledFrame
        , StyledPhrase
        , StyledMeaning
        , StyledButtonSet
        , StyledButton
-       } from '../styles'
+       } from '../../styles'
 
 
-class Phrase extends Component {
+class Revelation extends Component {
   constructor(props) {
-    super(props) // { phrases: [ {...}, ... ] }
-    this. imageFolder = "img/"
+    super(props) // { phrases: [ {...}, ... ] } <<< starts empty
+    this.imageFolder = 'img/'
     this.state = {
-      index: 0
+      index: -1
     }
+
+    this.setRandomIndex = this.setRandomIndex.bind(this)
+  }
+
+
+  componentDidMount() {
+    this.setRandomIndex()
+  }
+
+
+  setRandomIndex() {
+    const phraseCount = this.props.phrases.length
+    if (!phraseCount) {
+      setTimeout(this.setRandomIndex, 10)
+    }
+
+    const index = Math.floor(Math.random() * phraseCount)
+
+    this.setState({ index })
   }
 
 
@@ -48,6 +67,10 @@ class Phrase extends Component {
 
 
   render() {
+    if (this.state.index < 0) {
+      return ""
+    }
+
     const phraseData = this.props.phrases[this.state.index] || {}
 
     return (
@@ -78,10 +101,8 @@ class Phrase extends Component {
 }
 
 
-export default PhraseContainer = withTracker(() => {
+export default RevelationContainer = withTracker(() => {
   return {
     phrases: Phrases.find().fetch(),
   };
-})(Phrase);
-
-PhraseContainer.getDisplayName = () => "Фразеологизмы"
+})(Revelation);

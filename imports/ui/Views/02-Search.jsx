@@ -10,11 +10,6 @@ class Search extends Component {
   }
 
 
-  static getDisplayName() {
-    return "Find what you seek..."
-  }
-
-
   render() {
     return (
       <StyledPage>

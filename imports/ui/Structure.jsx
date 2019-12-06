@@ -5,16 +5,16 @@
 ///////////////////////////////////
 
 
-import Phrases from './Views/01_Phrases'
-import Search from './Views/02_Search'
+import Game from './Views/01_Game'
+import Search from './Views/02-Search'
 import About from './Views/03_About'
 
-const itemIndex = {"Phrases":1,"Search":2,"About":3}
+const itemIndex = {"Game":1,"Search":2,"About":3}
 
 class Structure{
   constructor() {
     this.components = {
-      Phrases
+      Game
     , Search
     , About
     }
