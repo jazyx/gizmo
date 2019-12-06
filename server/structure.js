@@ -37,7 +37,7 @@ export const createStructure = () => {
       return
     }
 
-    const index = parseInt(match[2], 10)
+    const index = parseInt(match[2], 10) || 0
     const item = match[3][0].toUpperCase() + match[3].substring(1)
     itemIndex[item] = index
 
@@ -68,6 +68,10 @@ export const createStructure = () => {
 
 const itemIndex = ${JSON.stringify(itemIndex)}
 
+const forNonZeroIndex = ( item => (
+  itemIndex[item]
+))
+
 class Structure{
   constructor() {
     this.components = {
@@ -79,6 +83,7 @@ class Structure{
     )
     this.pages = Object
                  .keys(this.components)
+                 .filter(forNonZeroIndex)
                  .sort(byIndex)
                  .map( key => {
                    const name = [key]

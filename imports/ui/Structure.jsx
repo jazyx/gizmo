@@ -8,8 +8,13 @@
 import Game from './Views/01_Game'
 import Search from './Views/02-Search'
 import About from './Views/03_About'
+import Splash from './Views/Splash'
 
-const itemIndex = {"Game":1,"Search":2,"About":3}
+const itemIndex = {"Game":1,"Search":2,"About":3,"Splash":0}
+
+const forNonZeroIndex = ( item => (
+  itemIndex[item]
+))
 
 class Structure{
   constructor() {
@@ -17,6 +22,7 @@ class Structure{
       Game
     , Search
     , About
+    , Splash
     }
 
     const byIndex = (a, b) => (
@@ -24,6 +30,7 @@ class Structure{
     )
     this.pages = Object
                  .keys(this.components)
+                 .filter(forNonZeroIndex)
                  .sort(byIndex)
                  .map( key => {
                    const name = [key]

@@ -4,6 +4,12 @@ import { Session } from 'meteor/session'
 const Jazyx = Session.get("Jazyx")
 
 
+
+export const StyledSplash = styled.div`
+  font-size: ${Jazyx.splash.titleFontSize}vmin;
+`
+
+
 export const StyledApp = styled.div`
   height: 100%;
   display: flex;
@@ -11,6 +17,7 @@ export const StyledApp = styled.div`
   justify-content: space-around;
   background-color: ${Jazyx.background};
 `
+
 
 export const StyledPage = styled.div`
   display: flex;

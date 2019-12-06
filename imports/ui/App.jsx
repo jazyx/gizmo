@@ -2,7 +2,6 @@
 import { Jazyx } from '../../lib/jazyx' // Its value is ignored here
 
 import React, { Component } from 'react';
-import { Session } from 'meteor/session'
 import Menu from './Menu.jsx';
 import Structure from './Structure.jsx';
 import { StyledApp } from './styles'
@@ -11,8 +10,7 @@ import { StyledApp } from './styles'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { view: "About" }
-
+    this.state = { view: "Splash" }  /// HARD-CODED ///
     this.setView = this.setView.bind(this)
   }
 

@@ -31,8 +31,9 @@ class Revelation extends Component {
 
   setRandomIndex() {
     const phraseCount = this.props.phrases.length
-    if (!phraseCount) {
-      setTimeout(this.setRandomIndex, 10)
+
+    if (phraseCount < 10) {
+      return setTimeout(this.setRandomIndex, 10)
     }
 
     const index = Math.floor(Math.random() * phraseCount)
