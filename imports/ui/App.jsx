@@ -26,7 +26,6 @@ class App extends Component {
 
   render() {
     const View = Structure.getComponent(this.state.view)
-    console.log(Structure.getPages())
 
     return (
       <StyledApp>

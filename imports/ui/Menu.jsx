@@ -66,7 +66,7 @@ const StyledSVG = styled.svg`
           ? `pointer-events: none;cursor: default;`
           : `cursor: pointer;`
    }
-  
+
   &:hover {
     opacity: ${props => props.open
                       ? 1
@@ -86,7 +86,7 @@ const getSVG = ({ showMenu, disabled, visible }, onClick ) => {
       disabled={disabled}
       visible={visible}
     >
-    
+
       <g className="menu">
         <path d="
           M5,20
@@ -131,6 +131,7 @@ const StyledList = styled.ul`
     padding: 1em;
     margin-top: 0.5em;
     text-align: center;
+    cursor: pointer;
   }
 
   & li:hover {
@@ -156,7 +157,7 @@ const StyledList = styled.ul`
 
 export default class Menu extends Component {
   constructor(props) {
-    super(props)  
+    super(props)
     this.pane = React.createRef()
     this.state = {
       showMenu: false
@@ -210,19 +211,17 @@ export default class Menu extends Component {
 
 
   prepareMenuItems() {
-    console.log("MenuItems")
-    
-    const action = (event) => {
-      this.props.onClick(event.target.innerText)
+    const action = (view) => {
+      this.props.onClick(view)
       this.toggleMenu()
     }
 
-    return this.props.menuItems.map( itemString => (
+    return this.props.menuItems.map( nameArray => (
       <li
-        key={itemString}
-        onClick={action}
+        key={nameArray[0]}
+        onClick={() => action(nameArray[0])}
       >
-        {itemString}
+        {nameArray[nameArray.length - 1]}
       </li>
     ))
   }

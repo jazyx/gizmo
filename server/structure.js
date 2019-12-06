@@ -1,4 +1,15 @@
-import { Meteor } from 'meteor/meteor'
+/**
+ * Run when the server launches and at any time where there is a
+ * change in file that the server can see.
+ * 
+ * Action: recreates the file at...
+ * 
+ *   imports/ui/Structure.jsx
+ *   
+ * ... to reflect the current files at the root of the folder
+ * 
+ *   imports/ui/Views/
+ */
 
 var fs = require('fs');
 var path = require('path');
@@ -53,7 +64,17 @@ class Structure{
     const byIndex = (a, b) => (
       this.components[a].getIndex() - this.components[b].getIndex()
     )
-    this.pages = Object.keys(this.components).sort(byIndex)
+    this.pages = Object
+                 .keys(this.components)
+                 .sort(byIndex)
+                 .map( key => {
+                   const name = [key]
+                   if (this.components[key].getDisplayName) {
+                     name.push(this.components[key].getDisplayName())
+                   }
+
+                   return name
+                 })
   }
 
 
@@ -76,40 +97,3 @@ export default new Structure()`
 
   fs.writeFileSync(output, script)
 }
-
-// const imports = []
-// const components = []
-  
-// imports.push(`import ${Component} from './Views/${parent}/${child}'\n`)
-
-
-
-// `class Structure{
-//   constructor() {
-//     this.components = {
-//       ${components.join("\n    , ")}
-//     }
-
-//     const byIndex = (a, b) => (
-//       this.components[a].getIndex() - this.components[b].getIndex()
-//     )
-//     this.pages = Object.keys(this.components).sort(byIndex)
-//   }
-
-
-//   getPages() {
-//     return this.pages
-//   }
-
-
-//   viewExists(name) {
-//     return !!this.components[name]
-//   }
-
-
-//   getComponent(name) {
-//     return this.components[name]
-//   }
-// }
-
-// export default new Structure()`

@@ -1,3 +1,5 @@
+// /home/blackslate/Repos/Gizmo/App/imports/ui/Views/Game.jsx
+
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import Phrases from '../../api/phrases';
@@ -11,7 +13,7 @@ import { StyledPage
 
 
 /// <<< HARD-CODED
-const index = 1
+const index = 10
 /// HARD-CODED >>>
 
 
@@ -22,11 +24,6 @@ class Phrase extends Component {
     this.state = {
       index: 0
     }
-  }
-
-
-  static getIndex() {
-    return index
   }
 
 
@@ -93,3 +90,5 @@ export default PhraseContainer = withTracker(() => {
 })(Phrase);
 
 PhraseContainer.getIndex = () => index
+
+PhraseContainer.getDisplayName = () => "Фразеологизмы"

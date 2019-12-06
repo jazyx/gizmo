@@ -5,7 +5,7 @@ import { StyledPage } from '../styles'
 const index = 6
 /// HARD-CODED >>>
 
-class About extends Component {
+class Search extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -19,6 +19,11 @@ class About extends Component {
   }
 
 
+  static getDisplayName() {
+    return "Find what you seek..."
+  }
+
+
   render() {
     return (
       <StyledPage>
@@ -29,4 +34,4 @@ class About extends Component {
 }
 
 
-export default About
+export default Search

@@ -6,7 +6,7 @@
 
 
 import About from './Views/About'
-import Game from './Views/Game'
+import Phrases from './Views/Phrases'
 import Search from './Views/Search'
 
 
@@ -14,14 +14,24 @@ class Structure{
   constructor() {
     this.components = {
       About
-    , Game
+    , Phrases
     , Search
     }
 
     const byIndex = (a, b) => (
       this.components[a].getIndex() - this.components[b].getIndex()
     )
-    this.pages = Object.keys(this.components).sort(byIndex)
+    this.pages = Object
+                 .keys(this.components)
+                 .sort(byIndex)
+                 .map( key => {
+                   const name = [key]
+                   if (this.components[key].getDisplayName) {
+                     name.push(this.components[key].getDisplayName())
+                   }
+
+                   return name
+                 })
   }
 
 
