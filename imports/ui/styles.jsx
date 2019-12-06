@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components'
-import { Session } from 'meteor/session'
 
 const Jazyx = Session.get("Jazyx")
 

@@ -7,7 +7,6 @@ import styled, { css } from 'styled-components'
 import { buttonColors
        , translucify
        } from '../../lib/utilities'
-import { Session } from 'meteor/session'
 
 
 const menuConstants = Session.get("Jazyx").menu
@@ -44,9 +43,6 @@ const StyledSVG = styled.svg`
                     ? menuConstants.iconOffset
                     : 0
             }vmin;
-  display: ${props => props.visible
-                    ? "block"
-                    : "none"
             }
   width:   ${menuConstants.iconSize}vmin;
   height:  ${menuConstants.iconSize}vmin;
@@ -66,16 +62,19 @@ const StyledSVG = styled.svg`
           ? `pointer-events: none;cursor: default;`
           : `cursor: pointer;`
    }
-
+  ${props => props.visible
+          ? ""
+          : "opacity:0;"
+  }
   &:hover {
     opacity: ${props => props.open
                       ? 1
                       : 0.75
               };
-   }
+  }
 `
 
-const getSVG = ({ showMenu, disabled, visible }, onClick ) => {
+const getSVG = ({ disabled, visible, showMenu }, onClick ) => {
   return (
     <StyledSVG
       id="openMenu"
@@ -160,31 +159,43 @@ export default class Menu extends Component {
     super(props)
     this.pane = React.createRef()
     this.state = {
-      showMenu: false
-    , visible: true
-    , disabled: false
+      visible: false
+    , disabled: true
+    , firstTime: true
     }
 
     this.toggleMenu = this.toggleMenu.bind(this)
     this.closeMenu = this.closeMenu.bind(this)
-
-    setTimeout(this.toggleMenu, 0)
   }
 
 
-  toggleMenu() {
+  setEnabled(state) {
+    if (state) {
+      this.setState({ visible: true, disabled: false })
+    }
+  }
+
+
+  toggleMenu(open) {
     if (this.state.disabled) {
       return
     }
 
-    const showMenu = !this.state.showMenu
+    const showMenu = typeof open === "boolean" 
+                   ? open
+                   : !this.state.showMenu
     this.setState({ showMenu })
 
     if (showMenu) {
-      const listener = this.closeMenu
-      document.body.addEventListener("touchstart", listener, true)
-      document.body.addEventListener("mousedown", listener, true)
+      this.prepareToCloseWithAClickElsewhere()
     }
+  }
+
+
+  prepareToCloseWithAClickElsewhere() {
+    const listener = this.closeMenu
+    document.body.addEventListener("touchstart", listener, true)
+    document.body.addEventListener("mousedown", listener, true)
   }
 
 
@@ -228,15 +239,24 @@ export default class Menu extends Component {
 
 
   render() {
-    const content = this.prepareMenuItems()
+    if (this.props.enabled === this.state.disabled) {
+      const delay = menuConstants.iconOffset * 10 // px => ms
+      setTimeout(() => this.setEnabled(this.props.enabled), 0)
+      setTimeout(() => this.toggleMenu(this.props.enabled), delay)
+      // setTimeout(() => {
+      //   this.setEnabled(this.props.enabled)
+      //   this.toggleMenu(this.props.enabled)
+      // }, 0)
+    }
 
+    const content = this.prepareMenuItems()
     const menuSVG = getSVG(this.state, this.toggleMenu)
 
     return (
       <StyledMenu
-          state={this.state}
-          ref={this.pane}
-        >
+        state={this.state}
+        ref={this.pane}
+      >
         {menuSVG}
         <StyledList>
           {content}
