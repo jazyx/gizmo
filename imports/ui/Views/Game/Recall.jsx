@@ -12,7 +12,7 @@ import { StyledPage
        } from '../../styles'
 
 
-class Revelation extends Component {
+class Recall extends Component {
   constructor(props) {
     super(props) // { phrases: [ {...}, ... ] } <<< starts empty
     this.imageFolder = 'img/'
@@ -25,7 +25,6 @@ class Revelation extends Component {
 
 
   componentDidMount() {
-    console.log("Revelation componentDidMount")
     this.setRandomIndex()
   }
 
@@ -103,8 +102,8 @@ class Revelation extends Component {
 }
 
 
-export default RevelationContainer = withTracker(() => {
+export default RecallContainer = withTracker(() => {
   return {
-    phrases: Phrases.find({ type: "revelation" }).fetch(),
+    phrases: Phrases.find().fetch(),
   };
-})(Revelation);
+})(Recall);

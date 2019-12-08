@@ -243,10 +243,6 @@ export default class Menu extends Component {
       const delay = menuConstants.iconOffset * 10 // px => ms
       setTimeout(() => this.setEnabled(this.props.enabled), 0)
       setTimeout(() => this.toggleMenu(this.props.enabled), delay)
-      // setTimeout(() => {
-      //   this.setEnabled(this.props.enabled)
-      //   this.toggleMenu(this.props.enabled)
-      // }, 0)
     }
 
     const content = this.prepareMenuItems()

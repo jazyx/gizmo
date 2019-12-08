@@ -2,6 +2,10 @@
 
 import React, { Component } from 'react';
 import Revelation from './Game/Revelation'
+import Recognition from './Game/Recognition'
+import Recall from './Game/Recall'
+import Revision from './Game/Revision'
+import GoldList from './Game/GoldList'
 
 
 
@@ -10,15 +14,26 @@ export default class Game extends Component {
     super(props) // { phrases: [ {...}, ... ] }
     this.components = {
       Revelation
+    , Recognition
+    , Recall
+    , Revision
+    , GoldList
     }
+
+    this.views = Object.keys(this.components)
+
     this.state = {
-      game: "Revelation"
+      game: "Recognition"
     }
   }
 
 
-  static getDisplayName () {
-    return "Фразеологизмы"
+  setView(game) {
+    if (this.views.indexOf(game) < 0) {
+      return
+    }
+
+    this.setState({ game })
   }
 
 
@@ -26,4 +41,10 @@ export default class Game extends Component {
     const Component = this.components[this.state.game]
     return <Component />
   }
+}
+
+
+// Static method
+Game.getDisplayName = () => {
+  return "Фразеологизмы"
 }
