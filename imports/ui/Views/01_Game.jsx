@@ -23,7 +23,7 @@ export default class Game extends Component {
     this.views = Object.keys(this.components)
 
     this.state = {
-      game: "Recognition"
+      game: "Recognition" // "Revelation" //
     }
   }
 

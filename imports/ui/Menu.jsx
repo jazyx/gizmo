@@ -4,16 +4,11 @@
 
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components'
-import { buttonColors
-       , translucify
-       } from '../../lib/utilities'
 
-
-const menuConstants = Session.get("Jazyx").menu
-const colors = buttonColors(menuConstants.background)
-colors.background = translucify( menuConstants.background
-                               , menuConstants.bgOpacity
-                               )
+const Jazyx  = Session.get("Jazyx")
+const colors = Jazyx.colors
+const menu   = Jazyx.menu
+const text   = Jazyx.text
 
 
 const StyledMenu = styled.div`
@@ -22,17 +17,17 @@ const StyledMenu = styled.div`
   top: 0;
   left: ${props => props.state.showMenu && props.state.visible
                  ? 0
-                 : -menuConstants.menuWidth}vmin;
+                 : -menu.width}vmin;
   ${props => props.state.showMenu && props.state.visible
           ? "box-shadow: 0 0 3vmin 0 rgba(0,0,0,0.75);"
           : ""
   }
   height: 100vh;
-  width: ${menuConstants.menuWidth}vmin;
+  width: ${menu.width}vmin;
   padding: 2vmin;
-  padding-top: ${menuConstants.iconSize}vmin
+  padding-top: ${menu.iconSize}vmin
   background-color: ${colors.background };
-  transition: left .${menuConstants.menuWidth}s linear;
+  transition: left .${menu.width}s linear;
 `
 
 
@@ -40,23 +35,23 @@ const StyledSVG = styled.svg`
   position: fixed;
   top: 0;
   left:    ${props => props.open
-                    ? menuConstants.iconOffset
+                    ? menu.iconOffset
                     : 0
             }vmin;
             }
-  width:   ${menuConstants.iconSize}vmin;
-  height:  ${menuConstants.iconSize}vmin;
-  fill:    ${menuConstants.iconColor};
+  width:   ${menu.iconSize}vmin;
+  height:  ${menu.iconSize}vmin;
+  fill:    ${colors.icon};
   opacity: ${props => props.open
                     ? 1
                     : 0.25
             }
-  transition: left .${menuConstants.iconOffset}s linear
-            , opacity .${menuConstants.iconOffset}s;
+  transition: left .${menu.iconOffset}s linear
+            , opacity .${menu.iconOffset}s;
   transition-property: left, opacity;
   transition-delay: ${props => props.open
-                             ? `.${menuConstants.iconSize}s, 0s;`
-                             : `0s, .${menuConstants.iconOffset}s;`
+                             ? `.${menu.iconSize}s, 0s;`
+                             : `0s, .${menu.iconOffset}s;`
                      }
   ${props => props.disabled
           ? `pointer-events: none;cursor: default;`
@@ -131,6 +126,7 @@ const StyledList = styled.ul`
     margin-top: 0.5em;
     text-align: center;
     cursor: pointer;
+    font-size: ${text.menuFontSize}vmin;
   }
 
   & li:hover {
@@ -240,7 +236,7 @@ export default class Menu extends Component {
 
   render() {
     if (this.props.enabled === this.state.disabled) {
-      const delay = menuConstants.iconOffset * 10 // px => ms
+      const delay = menu.iconOffset * 10 // px => ms
       setTimeout(() => this.setEnabled(this.props.enabled), 0)
       setTimeout(() => this.toggleMenu(this.props.enabled), delay)
     }

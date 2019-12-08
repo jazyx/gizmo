@@ -24,7 +24,7 @@ class Recognition extends Component {
     , disabled: []
     }
     this.cloze = "…………………"
-    this.placeholder = this.imageFolder + "question000.jpg"
+    this.placeholder = this.imageFolder + "question.png"
     this.setRandomIndex = this.setRandomIndex.bind(this)
     this.showPhrase = this.showPhrase.bind(this)
   }
