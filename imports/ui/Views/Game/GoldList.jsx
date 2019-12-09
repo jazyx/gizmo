@@ -11,11 +11,14 @@ import { StyledPage
        , StyledButton
        } from '../../styles'
 
+const Jazyx = Session.get("Jazyx")
+
+
 
 class Recall extends Component {
   constructor(props) {
     super(props) // { phrases: [ {...}, ... ] } <<< starts empty
-    this.imageFolder = 'img/'
+    this.imageFolder = Jazyx.image.folder
     this.state = {
       index: -1
     }

@@ -7,7 +7,7 @@ import styled, { css } from 'styled-components'
 
 const Jazyx  = Session.get("Jazyx")
 const colors = Jazyx.colors
-const menu   = Jazyx.menu
+const dimensions = Jazyx.dimensions
 const text   = Jazyx.text
 
 
@@ -17,17 +17,17 @@ const StyledMenu = styled.div`
   top: 0;
   left: ${props => props.state.showMenu && props.state.visible
                  ? 0
-                 : -menu.width}vmin;
+                 : -dimensions.menuWidth}vmin;
   ${props => props.state.showMenu && props.state.visible
           ? "box-shadow: 0 0 3vmin 0 rgba(0,0,0,0.75);"
           : ""
   }
   height: 100vh;
-  width: ${menu.width}vmin;
+  width: ${dimensions.menuWidth}vmin;
   padding: 2vmin;
-  padding-top: ${menu.iconSize}vmin
-  background-color: ${colors.background };
-  transition: left .${menu.width}s linear;
+  padding-top: ${dimensions.iconSize}vmin
+  background-color: ${colors.menuBG};
+  transition: left .${dimensions.menuWidth}s linear;
 `
 
 
@@ -35,23 +35,23 @@ const StyledSVG = styled.svg`
   position: fixed;
   top: 0;
   left:    ${props => props.open
-                    ? menu.iconOffset
+                    ? dimensions.iconOffset
                     : 0
             }vmin;
             }
-  width:   ${menu.iconSize}vmin;
-  height:  ${menu.iconSize}vmin;
+  width:   ${dimensions.iconSize}vmin;
+  height:  ${dimensions.iconSize}vmin;
   fill:    ${colors.icon};
   opacity: ${props => props.open
                     ? 1
                     : 0.25
             }
-  transition: left .${menu.iconOffset}s linear
-            , opacity .${menu.iconOffset}s;
+  transition: left .${dimensions.iconOffset}s linear
+            , opacity .${dimensions.iconOffset}s;
   transition-property: left, opacity;
   transition-delay: ${props => props.open
-                             ? `.${menu.iconSize}s, 0s;`
-                             : `0s, .${menu.iconOffset}s;`
+                             ? `.${dimensions.iconSize}s, 0s;`
+                             : `0s, .${dimensions.iconOffset}s;`
                      }
   ${props => props.disabled
           ? `pointer-events: none;cursor: default;`
@@ -134,8 +134,6 @@ const StyledList = styled.ul`
     border-color: ${colors.overTint};
     border-bottom-color: ${colors.overShade};
     border-right-color: ${colors.overShade};
-    border-radius: 1em;
-    padding: 1em;
   }
 
   & li:active {
@@ -143,8 +141,6 @@ const StyledList = styled.ul`
     border-color: ${colors.downShade};
     border-bottom-color: ${colors.downTint};
     border-right-color: ${colors.downTint};
-    border-radius: 1em;
-    padding: 1em;
   }
 `
 
@@ -236,7 +232,7 @@ export default class Menu extends Component {
 
   render() {
     if (this.props.enabled === this.state.disabled) {
-      const delay = menu.iconOffset * 10 // px => ms
+      const delay = dimensions.iconOffset * 10 // px => ms
       setTimeout(() => this.setEnabled(this.props.enabled), 0)
       setTimeout(() => this.toggleMenu(this.props.enabled), delay)
     }

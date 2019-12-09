@@ -28,7 +28,7 @@ class App extends Component {
 
   hideSplash() {
     const remaining = Math.max(0, this.hideSplashTime - +new Date())
-    
+
     setTimeout(
       () => {
         this.setState({ view: "Game", menuEnabled: true })
@@ -50,12 +50,12 @@ class App extends Component {
 
     return (
       <StyledApp>
+        <View />
         <Menu
           onClick={this.setView}
           enabled={this.state.menuEnabled}
           menuItems={Structure.getPages()}
         />
-        <View />
       </StyledApp>
     )
   }

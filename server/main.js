@@ -17,8 +17,6 @@ Meteor.startup(() => {
   const phraseCursor = Phrases.find()
   const phraseCount = phraseCursor.count()
 
-  console.log("phraseCount:", phraseCount)
-
   if (!phraseCount) {
     insertPhrases()
   }

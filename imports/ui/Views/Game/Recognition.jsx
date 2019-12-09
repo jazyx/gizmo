@@ -3,48 +3,57 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import Phrases from '../../../api/phrases';
+import AudioButton from '../../AudioButton'
+import Navigation from '../../Navigation'
 import { StyledPage
        , StyledFrame
        , StyledPhrase
        , StyledAnswers
        , StyledAnswerLi
+       , StyledAudioButton
+       , StyledReplayButton
        } from '../../styles'
 
-
-const noAudioDelay = Session.get("Jazyx").noAudioDelay
+const Jazyx = Session.get("Jazyx")
+const audio = {
+      play: false
+    , disabled: true
+    , size: 10
+    , radius: 5
+    }
 
 
 class Recognition extends Component {
   constructor(props) {
     super(props) // { phrases: [ {...}, ... ] } <<< starts empty
-    this.imageFolder = 'img/'
+    this.imageFolder = Jazyx.image.folder
     this.state = {
       index: -1
-    , insert: -1
-    , disabled: []
+    , maxIndex: 0
+    , disabled: {}
     }
     this.cloze = "…………………"
     this.placeholder = this.imageFolder + "question.png"
-    this.setRandomIndex = this.setRandomIndex.bind(this)
+    this.randomizeArray = this.randomizeArray.bind(this)
     this.showPhrase = this.showPhrase.bind(this)
   }
 
 
   componentDidMount() {
-    this.setRandomIndex()
+    this.randomizeArray()
   }
 
 
-  setRandomIndex() {
+  randomizeArray() {
     const phraseCount = this.props.phrases.length
 
-    if (phraseCount < 5) {
-      return setTimeout(this.setRandomIndex, 10)
+    if (phraseCount < 1) {
+      return setTimeout(this.randomizeArray, 10)
     }
 
-    const index = Math.floor(Math.random() * phraseCount)
 
-    this.showPhrase(index)
+
+    this.showPhrase(0)
   }
 
 
@@ -54,12 +63,10 @@ class Recognition extends Component {
     switch (index) {
       case undefined:
       case "next":
-        index = (this.state.index + 1) % last
+        index = this.getNext(last)
       break
       case "prev":
-        index = (this.state.index)
-              ? this.state.index - 1
-              : last
+        index = this.state.index - 1
       break
       default:
         if (isNaN(index)) {
@@ -69,14 +76,14 @@ class Recognition extends Component {
         }
       break
     }
-    
+
     const phraseData = this.props.phrases[index]
     const text = phraseData.cue.replace(/_+/, this.cloze)
 
     const distractors = phraseData.distractors
     const insert = Math.floor(Math.random() * distractors.length)
-    const disabled = distractors.reduce((map, distractor) => {     
-        map[distractor] = false
+    const disabled = distractors.reduce((map, distractor) => {
+        map[distractor.phrase] = false
         return map
       }
     , {}
@@ -86,22 +93,45 @@ class Recognition extends Component {
   }
 
 
-  checkAnswer(event, isCorrect, answerString) {
+  getNext(last) {
+    const index = this.state.index + 1
+    if (index === last) {
+      this.setState({ complete: true })
+    }
+
+    return index
+  }
+
+
+  checkAnswer(event, isCorrect, answer) {
+    const disabled = this.state.disabled
+
+    if (answer && disabled[answer.phrase]) {
+      return
+    }
+
     if (isCorrect) {
       this.showCorrect()
 
     } else {
-      const disabled = this.state.disabled
-      disabled[answerString] = true
-      this.setState({ disabled })
+      disabled[answer.phrase] = true
+      this.setState({ disabled, dontPlay: true })
     }
   }
 
 
   showCorrect() {
+    this.setState({ correct: true, dontPlay: false })
+    // so that full phrase plays
+
+    if (this.state.correct) {
+      return
+    }
+
     // Create correct answer...
     const phraseData = this.props.phrases[this.state.index]
-    let text = phraseData.cue.replace(/_+/, phraseData.answer)
+    let text = phraseData.cue.replace(/_+/, phraseData.answer.phrase)
+
     // ... and ensure that sentences begin with a Capital
     const regex = /(?:^|[.!?]['"]?\s+["']?)([a-zа-ё])/g
     let match
@@ -113,19 +143,18 @@ class Recognition extends Component {
            + text.substring(index + 1)
     }
 
-    this.setState({ text, correct: true })
-    this.playAudio()
-  }
+    const maxIndex = Math.min( this.state.maxIndex + 1
+                             , this.props.phrases.length - 1
+                             )
 
-
-  playAudio() {
-    setTimeout(this.showPhrase, noAudioDelay)
+    this.setState({ text, maxIndex })
   }
 
 
   getAnswers(phraseData) {
     const answers = phraseData.distractors.map((answer, index) => {
-      const disabled = this.state.disabled[answer]
+      const disabled = this.state.correct
+                    || this.state.disabled[answer.phrase]
 
       return (
         <StyledAnswerLi
@@ -133,7 +162,15 @@ class Recognition extends Component {
           disabled={disabled}
           onClick={(event) => this.checkAnswer(event, false, answer)}
         >
-          {answer}
+          <div>
+            <p>{answer.phrase}</p>
+            <AudioButton
+              disabled={disabled}
+              src={answer.audio}
+              size={audio.size}
+              radius={audio.radius}
+            />
+          </div>
         </StyledAnswerLi>
       )
     })
@@ -141,9 +178,17 @@ class Recognition extends Component {
     const answer = (
       <StyledAnswerLi
        key={"right"}
+       className={this.state.correct ? "correct" : ""}
        onClick={(event) => this.checkAnswer(event, true)}
       >
-        {phraseData.answer}
+        <div>
+          <p>{phraseData.answer.phrase}</p>
+          <AudioButton
+            src={phraseData.answer.audio}
+            size={audio.size}
+            radius={audio.radius}
+          />
+        </div>
       </StyledAnswerLi>
     )
 
@@ -153,11 +198,7 @@ class Recognition extends Component {
   }
 
 
-  render() {
-    if (this.state.index < 0) {
-      return ""
-    }
-
+  inProgress() {
     const phraseData = this.props.phrases[this.state.index] || {}
     const answers = this.getAnswers(phraseData)
     const image = this.state.correct
@@ -166,17 +207,57 @@ class Recognition extends Component {
 
     return (
       <StyledPage>
+        <Navigation
+          id="navigation"
+          onClick={this.showPhrase}
+          first={this.state.index === 0}
+          last={this.state.index === this.state.maxIndex}
+        />
         <StyledFrame
           backgroundImage={`url(${image})`}
-        />
+        >
+          <AudioButton
+            src={phraseData.audio}
+            disabled={!this.state.correct}
+            play={!this.state.dontPlay}
+          />
+        </StyledFrame>
         <StyledPhrase>
           {this.state.text}
         </StyledPhrase>
-        <StyledAnswers>
+        <ol>
           {answers}
-        </StyledAnswers>
+        </ol>
       </StyledPage>
     );
+  }
+
+
+  complete() {
+    return (
+      <div>
+        <h1>Victory!</h1>
+        <StyledReplayButton
+          onClick={() => {
+            this.setState({ complete: false })
+            this.showPhrase(0)
+          }}
+        >
+          Play Again
+        </StyledReplayButton>
+      </div>
+    )
+  }
+
+
+  render() {
+    if (this.state.index < 0) {
+      return ""
+    } else if (this.state.complete) {
+      return this.complete()
+    } else {
+      return this.inProgress()
+    }
   }
 }
 
@@ -186,3 +267,6 @@ export default RecognitionContainer = withTracker(() => {
     phrases: Phrases.find({ type: "recognition" }).fetch(),
   };
 })(Recognition);
+
+
+

@@ -52,62 +52,62 @@ export const phrases = [
 
  , {
     cue: "This is a phrase with space for a missing _."
-  , answer: "word"
+  , answer: { phrase: "word", audio: "audio/9.mp3" }
   , distractors: [
-      "limb"
-    , "tooth"
-    , "person"
+      { phrase: "limb", audio: "audio/1.mp3" }
+    , { phrase: "tooth", audio: "audio/1.mp3" }
+    , { phrase: "person", audio: "audio/1.mp3" }
     ]
   , image: "question_00.jpg"
-  , audio: ""
+  , audio: "audio/A.mp3"
   , type: "recognition"
   }
 , {
     cue: "'Twas brillig and the slithy toves did __ in the wabe"
-  , answer: "gyre and gimble"
+  , answer: { phrase: "gyre and gimble", audio: "audio/9.mp3" }
   , distractors: [
-      "frolic"
-    , "eat their sandwiches"
-    , "buttonhole strangers"
+      { phrase: "frolic", audio: "audio/2.mp3" }
+    , { phrase: "eat their sandwiches", audio: "audio/2.mp3" }
+    , { phrase: "buttonhole strangers", audio: "audio/2.mp3" }
     ]
   , image: "question_03.jpg"
-  , audio: ""
+  , audio: "audio/7.mp3"
   , type: "recognition"
   }
 , {
     cue: "___! I'm doing the best I can."
-  , answer: "cut me some slack"
+  , answer: { phrase: "cut me some slack", audio: "audio/9.mp3" }
   , distractors: [
-      "go back to the drawing board"
-    , "speak of the devil"
-    , "bite off more than you can chew"
+      { phrase: "go back to the drawing board", audio: "audio/3.mp3" }
+    , { phrase: "speak of the devil", audio: "audio/3.mp3" }
+    , { phrase: "bite off more than you can chew", audio: "audio/3.mp3" }
     ]
   , image: "question_06.jpg"
-  , audio: ""
+  , audio: "audio/7.mp3"
   , type: "recognition"
   }
 , {
     cue: "I'd _____ to be ambidextrous."
-  , answer: "give my right hand"
+  , answer: { phrase: "give my right hand", audio: "audio/9.mp3" }
   , distractors: [
-      "cry over spilt milk"
-    , "go on a wild goose chase"
-    , "play devil's advocate"
+      { phrase: "cry over spilt milk", audio: "audio/1.mp4" }
+    , { phrase: "go on a wild goose chase", audio: "audio/4.mp3" }
+    , { phrase: "play devil's advocate", audio: "audio/4.mp3" }
     ]
   , image: "question_12.jpg"
-  , audio: ""
+  , audio: "audio/7.mp3"
   , type: "recognition"
   }
 , {
     cue: "I don't want to _, but no-one goes home until this is finished."
-  , answer: "rain on your parade"
+  , answer: { phrase: "rain on your parade", audio: "audio/9.mp3" }
   , distractors: [
-      "put this on ice"
-    , "throw caution to the wind"
-    , "cut the mustard"
+      { phrase: "put this on ice", audio: "audio/5.mp3" }
+    , { phrase: "throw caution to the wind", audio: "audio/5.mp3" }
+    , { phrase: "cut the mustard", audio: "audio/5.mp3" }
     ]
   , image: "question_18.jpg"
-  , audio: ""
+  , audio: "audio/7.mp3"
   , type: "recognition"
   }
 ]
