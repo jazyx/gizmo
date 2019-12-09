@@ -47,15 +47,17 @@ class App extends Component {
 
   render() {
     const View = Structure.getComponent(this.state.view)
-
-    return (
-      <StyledApp>
-        <View />
-        <Menu
+    const menu = <Menu
           onClick={this.setView}
           enabled={this.state.menuEnabled}
           menuItems={Structure.getPages()}
         />
+
+    return (
+      <StyledApp>
+        <View />
+
+        
       </StyledApp>
     )
   }

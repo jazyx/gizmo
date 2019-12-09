@@ -29,28 +29,58 @@ export const StyledPage = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+
+  @media (min-aspect-ratio: 1/1) {
+    flex-direction: row;
+  }
 `
 
 
 export const StyledFrame = styled.div`
   position: relative;
-  width: 96vmin;
-  height: 54vmin;
-  background: ${props => props.backgroundImage} no-repeat center;
-  background-size: contain;
 
-  & button {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+  width: 100vw;
+  height: 50vh;
+  ${props => props.backgroundImage 
+           ? `
+             background: ${props.backgroundImage}
+             no-repeat center;
+             background-size: cover;
+
+              & button {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+              }
+             `
+           : ""
+   }
+
+  @media (min-aspect-ratio: 1/1) {
+    height: 100vh;
+    width: 50vw;
+    flex-direction: column;
   }
 `
 
 
 export const StyledPhrase = styled.p`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   font-size: ${text.cueFontSize}vmin;
   text-align: center;
-  height: 2.5em;
+  height: 4em;
+
+  @media (max-aspect-ratio: 1/1) {
+    margin: 0
+  }
+
+  @media (max-aspect-ratio: 1/2) {
+    margin: 1em 0;
+  }
 `
 
 
@@ -58,7 +88,33 @@ export const StyledMeaning = styled.p`
 `
 
 
-export const StyledAnswers = styled.ol`
+export const StyledAnswersList = styled.ol`
+
+
+  @media (max-aspect-ratio: 1/1) {
+    column-count: 2;
+    column-gap: 3em;
+
+    & li {
+      padding: 0;
+      height: 10vh;
+    }
+
+    & div {
+      height: 10vh;
+    }
+  }
+
+  @media (max-aspect-ratio: 1/2) {
+    column-count: 1;
+
+    & li, & div {
+      height: auto;
+    }
+    & li {
+      padding: 2vmin;
+    }
+  }
 `
 
 
@@ -87,6 +143,10 @@ export const StyledAnswerLi = styled.li`
   }
   padding: 2vmin;
   margin-top: 2vmin;
+
+  &:first-child {
+    margin-top: 0;
+  }
 
   &:hover {
     ${props => props.disabled
@@ -149,7 +209,7 @@ export const StyledButton = styled.button`
 
 
 export const StyledNavigation = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   justify-content: space-between;
 

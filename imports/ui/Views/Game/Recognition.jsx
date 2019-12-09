@@ -7,8 +7,9 @@ import AudioButton from '../../AudioButton'
 import Navigation from '../../Navigation'
 import { StyledPage
        , StyledFrame
+       , StyledText
        , StyledPhrase
-       , StyledAnswers
+       , StyledAnswersList
        , StyledAnswerLi
        , StyledAudioButton
        , StyledReplayButton
@@ -207,12 +208,7 @@ class Recognition extends Component {
 
     return (
       <StyledPage>
-        <Navigation
-          id="navigation"
-          onClick={this.showPhrase}
-          first={this.state.index === 0}
-          last={this.state.index === this.state.maxIndex}
-        />
+
         <StyledFrame
           backgroundImage={`url(${image})`}
         >
@@ -222,12 +218,23 @@ class Recognition extends Component {
             play={!this.state.dontPlay}
           />
         </StyledFrame>
-        <StyledPhrase>
-          {this.state.text}
-        </StyledPhrase>
-        <ol>
-          {answers}
-        </ol>
+
+        <StyledFrame>
+
+          <StyledPhrase>
+            {this.state.text}
+          </StyledPhrase>
+          <StyledAnswersList>
+            {answers}
+          </StyledAnswersList>
+
+          <Navigation
+            id="navigation"
+            onClick={this.showPhrase}
+            first={this.state.index === 0}
+            last={this.state.index === this.state.maxIndex}
+          />
+        </StyledFrame>
       </StyledPage>
     );
   }
