@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { StyledNavigation } from './styles'
+import { StyledNavigation
+       , StyledNavigationButton
+       } from './styles'
+
+const Jazyx = Session.get("Jazyx")
 
 
 
@@ -11,18 +15,16 @@ export default class Navigation extends Component{
   render() {
     return (
       <StyledNavigation>
-        <button
+        <StyledNavigationButton
           disabled={this.props.first}       
           onClick={() => this.props.onClick("prev")}
-        >
-          ⮜
-        </button>
-        <button
+          background={Jazyx.image.prev}
+        />
+        <StyledNavigationButton
           disabled={this.props.last}
           onClick={() => this.props.onClick("next")}
-        >
-          ⮞
-        </button>
+          background={Jazyx.image.next}
+        />
       </StyledNavigation>
     )
   }

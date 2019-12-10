@@ -271,7 +271,7 @@ class Recognition extends Component {
 
 export default RecognitionContainer = withTracker(() => {
   return {
-    phrases: Phrases.find({ type: "recognition" }).fetch(),
+    phrases: Phrases.find({ tags: "recognition" }).fetch(),
   };
 })(Recognition);
 

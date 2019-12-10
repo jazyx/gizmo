@@ -108,6 +108,6 @@ class Revelation extends Component {
 
 export default RevelationContainer = withTracker(() => {
   return {
-    phrases: Phrases.find({ type: "revelation" }).fetch(),
+    phrases: Phrases.find({ tags: "revelation" }).fetch(),
   };
 })(Revelation);

@@ -12,6 +12,8 @@ const text   = Jazyx.text
 
 export const StyledSplash = styled.div`
   font-size: ${splash.titleFontSize}vmin;
+  width: 100%;
+  text-align: center;
 `
 
 
@@ -89,8 +91,6 @@ export const StyledMeaning = styled.p`
 
 
 export const StyledAnswersList = styled.ol`
-
-
   @media (max-aspect-ratio: 1/1) {
     column-count: 2;
     column-gap: 3em;
@@ -170,7 +170,7 @@ export const StyledAnswerLi = styled.li`
                border-right-color: ${colors.downTint};
                `
     }
-    }
+  }
 
   & p {
     margin: 0 1em;
@@ -216,11 +216,54 @@ export const StyledNavigation = styled.div`
   height: 10vmin;
   width: 100%;
   bottom: 0;
+`
 
-  & button {
-    width: 10vmin;
-    background-color: transparent;
-    font-size: 8vmin;
+
+export const StyledNavigationButton = styled.button`
+  position: relative;
+  width: 10vmin;
+  height: 10vmin;
+  background-color: transparent;
+  background: url(${props => props.background}) no-repeat center;
+  background-size: contain;
+  ${props => props.disabled
+           ? `opacity: ${Jazyx.disabledOpacity};`
+           : ""
+   }
+`
+
+
+const a = styled.b` 
+  ${props => props.disabled
+           ? `border-color: ${colors.background};`
+           : `
+             border-color: ${colors.restShade};
+             cursor: pointer;
+             `
+  }
+
+  &:hover {
+    ${props => props.disabled
+             ? ""
+             : `
+               background-color: ${colors.overBg};
+               border-color: ${colors.overTint};
+               border-bottom-color: ${colors.overShade};
+               border-right-color: ${colors.overShade};
+               `
+    }
+  }
+
+  &:active {
+    ${props => props.disabled
+             ? ""
+             : `
+               background-color: ${colors.downBg};
+               border-color: ${colors.downShade};
+               border-bottom-color: ${colors.downTint};
+               border-right-color: ${colors.downTint};
+               `
+    }
   }
 `
 
