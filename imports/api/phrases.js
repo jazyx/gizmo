@@ -1,3 +1,10 @@
+import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
-export default new Mongo.Collection('phrases');
+export const Phrases = new Mongo.Collection('phrases');
+
+if (Meteor.isServer) {  
+  Meteor.publish('phrases', function publication() {
+    return Phrases.find();
+  });
+}

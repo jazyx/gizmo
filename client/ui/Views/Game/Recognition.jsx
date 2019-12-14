@@ -1,10 +1,13 @@
 // /home/blackslate/Repos/Gizmo/App/imports/ui/Views/Game.jsx
 
+import { Meteor } from 'meteor/meteor';
+
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import Phrases from '../../../api/phrases';
-import AudioButton from '../../AudioButton'
-import Navigation from '../../Navigation'
+
+import { Phrases } from '../../../../imports/api/phrases';
+import AudioButton from '../../Components/AudioButton'
+import Navigation from '../../Components/Navigation'
 import { StyledPage
        , StyledFrame
        , StyledText
@@ -13,7 +16,7 @@ import { StyledPage
        , StyledAnswerLi
        , StyledAudioButton
        , StyledReplayButton
-       } from '../../styles'
+       } from '../../Styles/styles'
 
 const Jazyx = Session.get("Jazyx")
 const audio = {
@@ -270,6 +273,8 @@ class Recognition extends Component {
 
 
 export default RecognitionContainer = withTracker(() => {
+  Meteor.subscribe('phrases')
+
   return {
     phrases: Phrases.find({ tags: "recognition" }).fetch(),
   };

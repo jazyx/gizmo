@@ -1,14 +1,14 @@
 /**
  * Run when the server launches and at any time where there is a
- * change in file that the server can see.
+ * change in any file that the server can see.
  * 
  * Action: recreates the file at...
  * 
- *   imports/ui/Structure.jsx
+ *   client/ui/Structure.jsx
  *   
  * ... to reflect the current files at the root of the folder
  * 
- *   imports/ui/Views/
+ *   client/ui/Views/
  */
 
 var fs = require('fs');
@@ -17,7 +17,7 @@ var path = require('path');
 export const createStructure = () => {
   let pathArray = path.resolve("./").split("/")
   while (pathArray.pop() !== ".meteor") {}    
-  const ui = path.join(pathArray.join("/"), "imports/ui/")
+  const ui = path.join(pathArray.join("/"), "client/ui/")
 
   const output = path.join(ui, "Structure.jsx")
   const views = path.join(ui, "Views/")

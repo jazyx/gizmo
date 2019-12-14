@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import Phrases from '/imports/api/phrases';
-import { phrases } from './phrases'
+import { Phrases } from '/imports/api/phrases';
+import { phrases } from '../imports/data/phrases'
 import { createStructure } from './structure'
 
 

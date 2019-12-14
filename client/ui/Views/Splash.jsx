@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { StyledPage } from '../styles'
+import { StyledPage
+       , StyledSplash
+       } from '../Styles/styles'
+
 
 class Search extends Component {
   constructor(props) {
@@ -13,7 +16,9 @@ class Search extends Component {
   render() {
     return (
       <StyledPage>
-        SEARCH
+        <StyledSplash>
+          Фразеологизмы
+        </StyledSplash>
       </StyledPage>
     );
   }

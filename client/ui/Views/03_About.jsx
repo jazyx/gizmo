@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { StyledPage
-       , StyledSplash
-       } from '../styles'
+import { StyledPage } from '../Styles/styles'
 
 
-class Search extends Component {
+class About extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -16,13 +14,11 @@ class Search extends Component {
   render() {
     return (
       <StyledPage>
-        <StyledSplash>
-          Фразеологизмы
-        </StyledSplash>
+        About
       </StyledPage>
     );
   }
 }
 
 
-export default Search
+export default About

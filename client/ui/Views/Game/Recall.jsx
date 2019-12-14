@@ -1,15 +1,18 @@
 // /home/blackslate/Repos/Gizmo/App/imports/ui/Views/Game.jsx
 
+import { Meteor } from 'meteor/meteor';
+
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import Phrases from '../../../api/phrases';
+
+import Phrases from '../../../../imports/api/phrases';
 import { StyledPage
        , StyledFrame
        , StyledPhrase
        , StyledMeaning
        , StyledButtonSet
        , StyledButton
-       } from '../../styles'
+       } from '../../Styles/styles'
 
 const Jazyx = Session.get("Jazyx")
 
@@ -106,6 +109,8 @@ class Recall extends Component {
 
 
 export default RecallContainer = withTracker(() => {
+  Meteor.subscribe('phrases')
+  
   return {
     phrases: Phrases.find().fetch(),
   };

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyledAudioButton } from './styles'
+import { StyledAudioButton } from '../Styles/styles'
 
 
 export default class AudioButton extends Component {
@@ -43,7 +43,7 @@ export default class AudioButton extends Component {
         this.audio.load() // required for iOS
       }).then(
         (success) => this.audioLoaded()
-      , (error)   => console.log("Audio Error", this.audio.src)
+      , (error)   => 0 // console.log("Audio Error", this.audio.src)
       )
     }
 

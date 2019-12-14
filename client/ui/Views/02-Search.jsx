@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { StyledPage } from '../styles'
+import { StyledPage } from '../Styles/styles'
 
-
-class About extends Component {
+class Search extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -14,11 +13,11 @@ class About extends Component {
   render() {
     return (
       <StyledPage>
-        About
+        SEARCH
       </StyledPage>
     );
   }
 }
 
 
-export default About
+export default Search

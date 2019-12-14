@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyledNavigation
        , StyledNavigationButton
-       } from './styles'
+       } from '../Styles/styles'
 
 const Jazyx = Session.get("Jazyx")
 

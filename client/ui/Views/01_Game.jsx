@@ -1,11 +1,12 @@
 // /home/blackslate/Repos/Gizmo/App/imports/ui/Views/Game.jsx
 
 import React, { Component } from 'react';
-import Revelation from './Game/Revelation'
+
+import Revelation  from './Game/Revelation'
 import Recognition from './Game/Recognition'
-import Recall from './Game/Recall'
-import Revision from './Game/Revision'
-import GoldList from './Game/GoldList'
+import Recall      from './Game/Recall'
+import Revision    from './Game/Revision'
+import GoldList    from './Game/GoldList'
 
 
 

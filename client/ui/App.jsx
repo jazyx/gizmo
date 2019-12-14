@@ -2,9 +2,9 @@
 import { preload } from '../../lib/preload'
 
 import React, { Component } from 'react';
-import Menu from './Menu.jsx';
 import Structure from './Structure.jsx';
-import { StyledApp } from './styles'
+import Menu from './Components/Menu.jsx';
+import { StyledApp } from './Styles/styles'
 
 const Jazyx = Session.get("Jazyx")
 
