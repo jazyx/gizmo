@@ -5,12 +5,12 @@
 ///////////////////////////////////
 
 
-import Game from './Views/01_Game'
-import Search from './Views/02-Search'
+import Account from './Views/01_Account'
+import Game from './Views/02_Game'
 import About from './Views/03_About'
 import Splash from './Views/Splash'
 
-const itemIndex = {"Game":1,"Search":2,"About":3,"Splash":0}
+const itemIndex = {"Account":1,"Game":2,"About":3,"Splash":0}
 
 const forNonZeroIndex = ( item => (
   itemIndex[item]
@@ -19,8 +19,8 @@ const forNonZeroIndex = ( item => (
 class Structure{
   constructor() {
     this.components = {
-      Game
-    , Search
+      Account
+    , Game
     , About
     , Splash
     }
@@ -33,12 +33,12 @@ class Structure{
                  .filter(forNonZeroIndex)
                  .sort(byIndex)
                  .map( key => {
-                   const name = [key]
-                   if (this.components[key].getDisplayName) {
-                     name.push(this.components[key].getDisplayName())
+                   const options = { key }
+                   if (this.components[key].getOptions) {
+                     Object.assign(options, this.components[key].getOptions())
                    }
 
-                   return name
+                   return options
                  })
   }
 

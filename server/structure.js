@@ -86,12 +86,12 @@ class Structure{
                  .filter(forNonZeroIndex)
                  .sort(byIndex)
                  .map( key => {
-                   const name = [key]
-                   if (this.components[key].getDisplayName) {
-                     name.push(this.components[key].getDisplayName())
+                   const options = { key }
+                   if (this.components[key].getOptions) {
+                     Object.assign(options, this.components[key].getOptions())
                    }
 
-                   return name
+                   return options
                  })
   }
 

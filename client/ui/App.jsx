@@ -56,6 +56,7 @@ class App extends Component {
           onClick={this.setView}
           enabled={this.state.menuEnabled}
           menuItems={Structure.getPages()}
+          selected={this.state.view}
         />
       </StyledApp>
     )

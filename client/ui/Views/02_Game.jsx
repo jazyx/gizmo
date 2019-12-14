@@ -46,6 +46,6 @@ export default class Game extends Component {
 
 
 // Static method
-Game.getDisplayName = () => {
-  return "Фразеологизмы"
+Game.getOptions = () => {
+  return { name: "Фразеологизмы" }
 }

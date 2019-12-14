@@ -69,6 +69,7 @@ const StyledSVG = styled.svg`
   }
 `
 
+
 const getSVG = ({ disabled, visible, showMenu }, onClick ) => {
   return (
     <StyledSVG
@@ -118,32 +119,37 @@ const getSVG = ({ disabled, visible, showMenu }, onClick ) => {
 const StyledList = styled.ul`
   list-style-type: none;
   padding: 0;
-
-  & li {
-    border: 1px solid ${colors.restShade};
-    border-radius: 1em;
-    padding: 1em;
-    margin-top: 0.5em;
-    text-align: center;
-    cursor: pointer;
-    font-size: ${text.menuFontSize}vmin;
-  }
-
-  & li:hover {
-    background-color: ${colors.overBg};
-    border-color: ${colors.overTint};
-    border-bottom-color: ${colors.overShade};
-    border-right-color: ${colors.overShade};
-  }
-
-  & li:active {
-    background-color: ${colors.downBg};
-    border-color: ${colors.downShade};
-    border-bottom-color: ${colors.downTint};
-    border-right-color: ${colors.downTint};
-  }
 `
 
+
+const StyledLI = styled.li`
+  background-color: ${props => props.colors.restBg};
+  border: 1px solid ${props => props.colors.restShade};
+  border-radius: 1em;
+  padding: 1em;
+  margin-top: 0.5em;
+  text-align: center;
+  cursor: pointer;
+  font-size: ${text.menuFontSize}vmin;
+
+  &:hover {
+    background-color: ${props => props.colors.overBg};
+    border-color: ${props => props.colors.overTint};
+    border-bottom-color: ${props => props.colors.overShade};
+    border-right-color: ${props => props.colors.overShade};
+  }
+
+  &:active, &.selected {
+    background-color: ${props => props.colors.downBg};
+    border-color: ${props => props.colors.downShade};
+    border-bottom-color: ${props => props.colors.downTint};
+    border-right-color: ${props => props.colors.downTint};
+  }
+
+  &.selected {
+    cursor: default;
+  }
+`
 
 
 export default class Menu extends Component {
@@ -173,7 +179,7 @@ export default class Menu extends Component {
       return
     }
 
-    const showMenu = typeof open === "boolean" 
+    const showMenu = typeof open === "boolean"
                    ? open
                    : !this.state.showMenu
     this.setState({ showMenu })
@@ -219,14 +225,27 @@ export default class Menu extends Component {
       this.toggleMenu()
     }
 
-    return this.props.menuItems.map( nameArray => (
-      <li
-        key={nameArray[0]}
-        onClick={() => action(nameArray[0])}
-      >
-        {nameArray[nameArray.length - 1]}
-      </li>
-    ))
+    const loggedIn = false // TODO
+    const items = this.props.menuItems.map( options => {
+      const colors = (loggedIn || !options.theme)
+                   ? Jazyx.colors
+                   : Jazyx[options.theme]
+      const className = (this.props.selected === options.key)
+                      ? "selected"
+                      : ""
+      return (
+        <StyledLI
+          key={options.key}
+          onClick={() => action(options.key)}
+          colors={colors}
+          className={className}
+        >
+          {options.name || options.key}
+        </StyledLI>
+      )
+    })
+
+    return items
   }
 
 

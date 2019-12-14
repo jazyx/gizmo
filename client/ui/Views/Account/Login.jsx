@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StyledPage } from '../Styles/styles'
+import { StyledPage } from '../../Styles/styles'
 
-class Search extends Component {
+
+class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -13,11 +14,11 @@ class Search extends Component {
   render() {
     return (
       <StyledPage>
-        SEARCH
+        Log in
       </StyledPage>
     );
   }
 }
 
 
-export default Search
+export default Login
