@@ -1,7 +1,3 @@
-/**
- * /home/blackslate/Repos/Gizmo/App/imports/ui/Menu.jsx
- */
-
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components'
 
@@ -9,6 +5,7 @@ const Jazyx  = Session.get("Jazyx")
 const colors = Jazyx.colors
 const dimensions = Jazyx.dimensions
 const text   = Jazyx.text
+
 
 
 const StyledMenu = styled.div`
@@ -225,22 +222,24 @@ export default class Menu extends Component {
       this.toggleMenu()
     }
 
-    const loggedIn = false // TODO
     const items = this.props.menuItems.map( options => {
-      const colors = (loggedIn || !options.theme)
-                   ? Jazyx.colors
-                   : Jazyx[options.theme]
-      const className = (this.props.selected === options.key)
+      const key = options.key
+      const colors = options.theme
+                   ? Jazyx[options.theme]
+                   : Jazyx.colors
+      const className = (this.props.selected === key)
                       ? "selected"
                       : ""
+      const name = options.name || key
+
       return (
         <StyledLI
-          key={options.key}
-          onClick={() => action(options.key)}
+          key={key}
+          onClick={() => action(key)}
           colors={colors}
           className={className}
         >
-          {options.name || options.key}
+          {name}
         </StyledLI>
       )
     })

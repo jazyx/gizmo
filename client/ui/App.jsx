@@ -1,5 +1,8 @@
 // Initialize Session.get("Jazyx") before anything else starts
 import { preload } from '../../lib/preload'
+// Prepare the connection object so that the Accounts menu item will
+// know what name to display
+import connection from '../../lib/connection'
 
 import React, { Component } from 'react';
 import Structure from './Structure.jsx';
@@ -31,7 +34,7 @@ class App extends Component {
 
     setTimeout(
       () => {
-        this.setState({ view: "Game", menuEnabled: true })
+        this.setState({ view: "Account", menuEnabled: true })
       }
     , remaining
     )

@@ -1,5 +1,3 @@
-// /home/blackslate/Repos/Gizmo/App/imports/ui/Views/Game.jsx
-
 import React, { Component } from 'react';
 
 import Revelation  from './Game/Revelation'
@@ -7,6 +5,8 @@ import Recognition from './Game/Recognition'
 import Recall      from './Game/Recall'
 import Revision    from './Game/Revision'
 import GoldList    from './Game/GoldList'
+
+import l10n from '../../../lib/l10n'
 
 
 
@@ -29,6 +29,13 @@ export default class Game extends Component {
   }
 
 
+  static getOptions() {
+    return {
+      name: l10n.getString("idioms")
+    }
+  }
+
+
   setView(game) {
     if (this.views.indexOf(game) < 0) {
       return
@@ -42,10 +49,4 @@ export default class Game extends Component {
     const Component = this.components[this.state.game]
     return <Component />
   }
-}
-
-
-// Static method
-Game.getOptions = () => {
-  return { name: "Фразеологизмы" }
 }
