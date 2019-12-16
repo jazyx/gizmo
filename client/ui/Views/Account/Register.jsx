@@ -7,35 +7,12 @@ import { debounce
 import l10n from '../../../../lib/l10n'
 
 
-;(function test(){
-  // let pass = "james@lexogram.com"
-  // console.log(pass, verify(pass, "email"))
-  // let fail = "james@lexogram.c"
-  // console.log(fail, verify(fail, "email"))
-
-
-  // pass = "Пароль1A"
-  // console.log(pass, verify(pass, "password"))
-  // pass = "11Utypjufndu!!"
-  // console.log(pass, verify(pass, "password"))
-  // pass = "Aa1*Aa1*"
-  // console.log(pass, verify(pass, "password"))
-  // pass = "This 1 is good"
-  // console.log(pass, verify(pass, "password"))
-
-  // fail = "password"
-  // console.log(fail, verify(fail, "password"))
-  // fail = "Aa1*Aa1"
-  // console.log(fail, verify(fail, "password"))
-  // fail = "is this as long as you want?"
-  // console.log(fail, verify(fail, "password"))
-})()
-
-
 
 class Register extends Component {
   constructor(props) {
     super(props)
+    const dbDelay = 500
+
     this.state = {
       username: ""
     , email: ""
@@ -43,6 +20,7 @@ class Register extends Component {
     , confirm: ""
     , rolloverText: ""
     , touched: {}
+    , emailTaken: false
     , valid:{
         username: false
       , email:    true
@@ -60,41 +38,46 @@ class Register extends Component {
     , invalid:     l10n.getString("invalid")
     , confirm:     l10n.getString("confirm")
     , register:    l10n.getString("register")
+    , login:       l10n.getString("login")
     }
 
-    this.checkUsername   = this.checkUsername.bind(this)
-    this.checkEmail      = this.checkEmail.bind(this)
-    this.checkPassword   = this.checkPassword.bind(this)
-    this.confirmPassword = this.confirmPassword.bind(this)
-    this.nameIsNotTaken  = this.nameIsNotTaken.bind(this)
-    this.emailIsNotTaken = this.emailIsNotTaken.bind(this)
-    this.getClass        = this.getClass.bind(this)
-    this.rollover        = this.rollover.bind(this)
-    this.register        = this.register.bind(this)
-    this.registerCallback = this.registerCallback.bind(this)
+    this.checkUsername         = this.checkUsername.bind(this)
+    this.checkEmail            = this.checkEmail.bind(this)
+    this.checkPassword         = this.checkPassword.bind(this)
+    this.confirmPassword       = this.confirmPassword.bind(this)
+    this.nameIsNotTaken        = this.nameIsNotTaken.bind(this)
+    this.emailIsNotTaken       = this.emailIsNotTaken.bind(this)
+    this.idNotTaken            = this.idNotTaken.bind(this)
+    this.confirm               = this.confirm.bind(this)
+    this.getClass              = this.getClass.bind(this)
+    this.rollover              = this.rollover.bind(this)
+    this.register              = this.register.bind(this)
+    this.registerCallback      = this.registerCallback.bind(this)
+
+    this.debouncedIdIsNotTaken = debounce(this.idNotTaken, dbDelay)
+    this.debouncedVerify       = debounce(verify, dbDelay)
+    this.debouncedConfirm      = debounce(this.confirm, dbDelay)
   }
 
-  // Username
-  // Email (optional)
-  // Password
-  // Confirm
-  // [Show password]
-  // Link to:
-  // - Log in
-  
+
   checkUsername(event) {
     const username = event.target.value
     const touched = this.state.touched
     touched.username = true
 
     this.setState({ username, touched }) // will update next render
-   
+
     if ( username) {
-      const options = { type: "username", value: username }
-      Meteor.call('idIsNotTaken', options, this.nameIsNotTaken)
-  
+      this.debouncedIdIsNotTaken(
+        "username"
+      , username
+      , this.nameIsNotTaken
+      )      
+
     } else {
-      this.validate("username", false)
+      this.setState({ username })
+      // Wait for this.state.username to clear before validating
+      setTimeout(() => this.validate("username", false), 0)
     }
   }
 
@@ -107,15 +90,28 @@ class Register extends Component {
     this.setState({ email, touched })
 
     if (!email) {
-      this.validate("email", true)
-
-    } else if (verify(email, "email")) {
-      const options = { type: "email", value: email }
-      Meteor.call('idIsNotTaken', options, this.emailIsNotTaken)
-
-    } else {
-      this.validate("email", false)
+      return this.validate("email", true)
     }
+
+    const callback = (value, type, result) => {
+      if (result) {
+        // The email is valid
+        this.idNotTaken(type, value, this.emailIsNotTaken)
+
+      } else {
+        this.emailTaken = false // since it is invalid
+        this.validate("email", false)
+      }
+    }
+
+    this.validate("email", true) // to hide the feedback while typing
+    this.debouncedVerify(email, "email", callback)
+  }
+
+
+  idNotTaken(type, value, callback) {
+    const options = { type, value }
+    Meteor.call('idIsNotTaken', options, callback)
   }
 
 
@@ -131,7 +127,8 @@ class Register extends Component {
     const valid = (error)
                 ? false
                 : (result === true)
-    this.validate("email", valid)   
+    this.emailTaken = !result
+    this.validate("email", valid)
   }
 
 
@@ -139,11 +136,17 @@ class Register extends Component {
     const password = event.target.value
     const touched = this.state.touched
     touched.password = true
-
-    this.validate("confirm", password === this.state.confirm)
-    this.validate("password", verify(password, "password"))
+    touched.confirm = true
 
     this.setState({ password, touched })
+    this.validate("password", true) // temporarily
+
+    const callback = (password, type, result) => {
+      this.validate("confirm", password === this.state.confirm)
+      this.validate("password", result)
+    }
+
+    this.debouncedVerify(password, "password", callback)
   }
 
 
@@ -152,9 +155,15 @@ class Register extends Component {
     const touched = this.state.touched
     touched.confirm = true
 
-    this.validate("confirm", this.state.password === confirm)
-
     this.setState({ confirm, touched })
+    this.validate("confirm", true)
+
+    this.debouncedConfirm(confirm)
+ }
+
+
+  confirm(confirm) {
+    this.validate("confirm", this.state.password === confirm)
   }
 
 
@@ -165,6 +174,7 @@ class Register extends Component {
     const keys = Object.keys(valid)
     removeFrom(keys, "form")
     valid.form = keys.every( key => this.state.valid[key])
+
     this.setState({ valid })
     this.rollover({ target: { id: key }})
   }
@@ -189,6 +199,32 @@ class Register extends Component {
       }
     }
 
+    const emailRollover = (isSuggestion) => {
+      let rolloverText = ""
+
+      if (!this.state.email) {
+        if (isSuggestion) {
+          rolloverText = (
+            <span>
+             {l10n.getString("emailBenefits")}
+            </span>
+          )
+        }
+
+      } else if (!this.state.valid["email"]) {
+        if (this.emailTaken) {
+          rolloverText = l10n.getString(
+            "emailTaken"
+          , { "%1": this.state.email }
+          )
+        } else {
+          rolloverText = l10n.getString("invalidEmail")
+        }
+      }
+
+      return rolloverText
+    }
+
     const registerErrors = () => {
       const fillers = {
         "%1": this.state.valid["username"]
@@ -196,7 +232,7 @@ class Register extends Component {
             : userNameError()
       , "%2": this.state.valid["email"]
             ? ""
-            : l10n.getString("invalidEmail")
+            : emailRollover()
       , "%3": this.state.valid["password"]
             ? ""
             : l10n.getString("invalidPassword")
@@ -228,7 +264,7 @@ class Register extends Component {
         case "username":
           return <p>{userNameError()}</p>
         case "email":
-          return <p>{l10n.getString("invalidEmail")}</p>
+          return <p>{emailRollover()}</p>
         case "password":
           return <p>{l10n.getString("invalidPassword")}</p>
         case "confirm":
@@ -236,10 +272,14 @@ class Register extends Component {
         case "form":
           return registerErrors()
       }
-    } 
+    }
 
-    if (event.type !== "mouseleave" && !this.state.valid[id]) {
-      rolloverText = getRolloverText(id)
+    if (event.type !== "mouseleave") {
+      if (!this.state.valid[id]) {
+        rolloverText = getRolloverText(id)
+      } else if ( id === "email" ){
+        rolloverText = emailRollover("suggestion")
+      }
     }
 
     this.setState({ rolloverText })
@@ -258,6 +298,7 @@ class Register extends Component {
     return className
   }
 
+
   register(event) {
     const { username, email, password } = this.state
     const options = { username, email, password }
@@ -269,7 +310,36 @@ class Register extends Component {
 
 
   registerCallback(error, result) {
-    console.log("registerCallback","error:", error, "result:", result)
+    const { username, emails } = Meteor.user()
+    let email = this.state.email
+    let verified = false
+
+    if (email && (email = email.toLowerCase())) {
+      verified = emails.reduce((verified, emailData) => {
+        if (emailData.address.toLowerCase() === email) {
+          return emailData.verified
+        } else {
+          return verified
+        }
+      }, verified)
+
+      if (!verified) {
+        this.sendVerificationEmail(email)
+      }
+    }
+  }
+
+
+  sendVerificationEmail(email) {
+    const code = l10n.getLanguage()
+
+    Meteor.call('sendVerificationEmail', email, code, (error, result) => {
+      if (error) {
+        console.warn("Error from sendVerificationEmail", error)
+      } else {
+        // TODO: Tell user verification email has been sent
+      }
+    })
   }
 
 
@@ -288,8 +358,8 @@ class Register extends Component {
           <input
             type="text"
             placeholder={this.strings.username}
-            value={this.props.username}
-            onChange={debounce(this.checkUsername, 200, "persist")}
+            value={this.state.username}
+            onChange={this.checkUsername}
             className={this.getClass("username")}
             required
           />
@@ -303,8 +373,8 @@ class Register extends Component {
           <input
             type="text"
             placeholder={this.strings.emailHolder}
-            value={this.props.password}
-            onChange={debounce(this.checkEmail, 200, "persist")}
+            value={this.state.email}
+            onChange={this.checkEmail}
             className={this.getClass("email")}
           />
         </label>
@@ -317,7 +387,7 @@ class Register extends Component {
           <input
             type="password"
             placeholder={this.strings.password}
-            value={this.props.password}
+            value={this.state.password}
             onChange={this.checkPassword}
             className={this.getClass("password")}
             required
@@ -331,13 +401,20 @@ class Register extends Component {
           {this.strings.confirm + ":"}
           <input
             type="password"
-            value={this.props.confirm}
+            value={this.state.confirm}
             onChange={this.confirmPassword}
             className={this.getClass("confirm")}
             required
           />
         </label>
         <div>
+          <button
+            id="login"
+            type="button"
+            onClick={() => this.props.setDisplay("Login")}
+          >
+            {this.strings.login}
+          </button>
           <button
             id="form"
             type="submit"

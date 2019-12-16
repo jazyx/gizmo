@@ -24,7 +24,7 @@ const StyledAccount = styled.div`
     width: 90vmin;
     height: 100%;
     margin: 0 auto;
-    font-size: 3.3vmin;
+    font-size: 3.5vmin;
   }
 
   & label {
@@ -44,15 +44,24 @@ const StyledAccount = styled.div`
 
   & div {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
   }
 
   & div#errors, #errors div {
     display: block;
     height: 20vmin
+    color: #900;   
+    font-size: 2.7vmin;
 
     & p {
       font-weight: bold;
+    }
+
+    & span {
+      display: block;
+      color: #000;
+      font-weight: normal;
+      margin: 1em 0;
     }
   }
 
@@ -95,12 +104,15 @@ class Account extends Component {
     , Register
     }
 
-    this.users = storage.getItem("users") || []
+    this.displays = Object.keys(this.components)
 
+    this.users = storage.getItem("users") || []
 
     this.state = {
       display: connection.getAction()
     }
+
+    this.setDisplay = this.setDisplay.bind(this)
   }
 
 
@@ -119,12 +131,25 @@ class Account extends Component {
   }
 
 
+  setDisplay(display) {
+    if (this.displays.indexOf(display) < 0) {
+      return console.log(
+        "Account.setDisplay error: unknown display", display
+      )
+    }
+
+    this.setState({ display })
+  }
+
+
   render() {
     const Display = this.components[this.state.display]
 
     return (
       <AccountPage>
-        <Display />
+        <Display
+          setDisplay={this.setDisplay}
+        />
       </AccountPage>
     );
   }
