@@ -17,10 +17,7 @@ export const strings = {
   , "username":    "Username"
   , "email":       "Email address (optional)"
   , "emailholder": "name@example.com"
-  , "password":    "Secure password"
-  , "invalid":     `Password must contain at least 8 characters, 
-  use both Uppercase and lowercase letters,
-  a number and a special character.`
+  , "password":    "UPPERlower12345!@#$%"
   , "confirm":     "Confirm Password"
 
   , "registererrors": `{ "p": "Please correct the following:"
@@ -36,22 +33,31 @@ export const strings = {
 , "ru": {
     _icon_: "/flags/flag-ru.png"
   , "ru":       "Русский"
-  , "login":    "RU — Log In"
-  , "logout":   "RU — Log Out"
-  , "register": "RU — Register"
-  , "complete": "RU — Complete Registration"
-  , "confirm":  "RU — Confirm Email"
-  , "edit":     "RU — Edit connection details"
+  , "login":    "РФ — Log In"
+  , "logout":   "РФ — Log Out"
+  , "register": "РФ — Register"
+  , "complete": "РФ — Complete Registration"
+  , "confirm":  "РФ — Confirm Email"
+  , "edit":     "РФ — Edit connection details"
   , "idioms":   "Фразеологизмы"
-  , "about":    "RU — About"
+  , "about":    "РФ — About"
 
-  , "username":    "RU — Username"
-  , "email":       "RU — Email address (optional)"
-  , "emaildolder": "RU — name@example.com"
-  , "password":    "RU — Secure password"
-  , "invalid":     `RU — Password must contain at least 8 characters, 
+  , "username":    "РФ — Username"
+  , "email":       "РФ — Email address (optional)"
+  , "emailholder": "имя@экземпляр.рф"
+  , "password":    "РФ — Secure password"
+  , "invalid":     `РФ — Password must contain at least 8 characters, 
 use both Uppercase and lowercase letters,
 a number and a special character.`
-  , "confirm":     "RU — Confirm Password"
+  , "confirm":     "РФ — Confirm Password"
+
+  , "registererrors": `{ "p": "РФ — Please correct the following:"
+                       , "li": ["%1", "%2", "%3", "%4"] }
+                      `
+  , "usernameempty": "РФ — The username cannot be empty"
+  , "usernametaken": "РФ — The username '%1' has already been taken"
+  , "invalidemail":  "РФ — The email address appears to be invalid"
+  , "invalidpassword": "РФ — A secure password should be at least 8 characters long, with both UPPERcase and lowercase letters. It should also have least one number and one special character."
+  , "confirmmustmatch": "РФ — The two passwords do not match"
   }
 }

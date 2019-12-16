@@ -301,7 +301,7 @@ class Register extends Component {
         >
           {this.strings.email + ":"}
           <input
-            type="email"
+            type="text"
             placeholder={this.strings.emailHolder}
             value={this.props.password}
             onChange={debounce(this.checkEmail, 200, "persist")}
